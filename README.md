@@ -16,7 +16,7 @@ A modular USSD application for emergency rescue services in Rwanda, built with E
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/ndizeyedavid/INKINGI-Rescue-AT-Server
 cd INKINGI-Rescue-AT-server
 ```
 
