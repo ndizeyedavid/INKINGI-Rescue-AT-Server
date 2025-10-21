@@ -15,6 +15,16 @@ export const EMERGENCY_TYPES = {
   OTHER: "other",
 };
 
+// Emergency type labels
+export const EMERGENCY_TYPE_LABELS = {
+  1: { type: "fire", label: "Fire" },
+  2: { type: "medical", label: "Medical" },
+  3: { type: "assault", label: "Assault" },
+  4: { type: "corruption", label: "Corruption" },
+  5: { type: "accident", label: "Accident" },
+  6: { type: "other", label: "Other" },
+};
+
 // Hotline numbers
 export const HOTLINES = {
   POLICE: "112",
@@ -28,6 +38,13 @@ export const LANGUAGES = {
   KINYARWANDA: "rw",
   FRENCH: "fr",
   KISWAHILI: "sw",
+};
+
+// SMS Configuration
+export const SMS_CONFIG = {
+  SENDER_ID: "INKINGI", // Your approved sender ID
+  MAX_LENGTH: 160, // Standard SMS length
+  ENABLE_DELIVERY_REPORTS: true,
 };
 
 // Session timeout (in milliseconds)
