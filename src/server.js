@@ -1,18 +1,34 @@
 import express from "express";
+import ussdRouter from "./routers/ussdRouter.js";
+import { requestLogger } from "./middlewares/requestLogger.js";
+import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
+const PORT = process.env.PORT || 8080;
 
+// Middleware
 app.use(express.json());
-const PORT = 8080;
+app.use(express.urlencoded({ extended: true }));
+app.use(requestLogger);
 
+// Health check route
 app.get("/", (req, res) => {
-  res.send("Server is Running!");
+  res.json({
+    status: "success",
+    message: "INKINGI Rescue USSD Server is Running!",
+    version: "1.0.0",
+  });
 });
 
-app.post("/ussd", (req, res) => {});
-app.post("/sms", (req, res) => {});
-app.post("/sms/broacast", (req, res) => {});
+// Routes
+app.use("/", ussdRouter);
 
+// Error handling
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 INKINGI Rescue Server running on port ${PORT}`);
+  console.log(`📱 USSD endpoint: http://localhost:${PORT}/ussd`);
 });
