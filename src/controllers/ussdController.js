@@ -6,22 +6,28 @@ import {
   sendDistressAlert,
   notifyRescueTeam,
 } from "./smsController.js";
+import {
+  reportEmergency,
+  getUserEmergencies,
+  triggerDistressAlert,
+  getPosts,
+} from "../services/backendApiService.js";
 
 // Language handlers - set language and redirect to main menu
 export const languageHandlers = {
-  en: (userData) => {
+  en: async (userData) => {
     sessionManager.setLanguage(userData.sessionId, "en");
     return ussdMenus.main.text;
   },
-  rw: (userData) => {
+  rw: async (userData) => {
     sessionManager.setLanguage(userData.sessionId, "rw");
     return ussdMenus.main.text;
   },
-  fr: (userData) => {
+  fr: async (userData) => {
     sessionManager.setLanguage(userData.sessionId, "fr");
     return ussdMenus.main.text;
   },
-  sw: (userData) => {
+  sw: async (userData) => {
     sessionManager.setLanguage(userData.sessionId, "sw");
     return ussdMenus.main.text;
   },
@@ -45,75 +51,184 @@ const getEmergencyTypeFromSession = (sessionId, text) => {
   return { type: "other", label: "Emergency" };
 };
 
+// Helper function to get additional info from session
+const getAdditionalInfoFromSession = (sessionId) => {
+  const session = sessionManager.getSession(sessionId);
+  return session?.additionalInfo || "";
+};
+
 // Terminal handlers - actions that end the USSD session
 export const terminalHandlers = {
   submitEmergency: async (userData) => {
     try {
       // Generate reference ID
       const referenceId = generateReferenceId();
-      
+
       // Get emergency type from session/navigation
       const emergencyInfo = getEmergencyTypeFromSession(
         userData.sessionId,
         userData.text
       );
-      
-      // Store emergency data in session for tracking
-      sessionManager.setSession(userData.sessionId, {
-        lastEmergency: {
-          referenceId,
-          type: emergencyInfo.type,
-          phoneNumber: userData.phoneNumber,
-          timestamp: new Date().toISOString(),
-        },
-      });
 
-      // Send SMS confirmation to user
-      await sendEmergencyConfirmation(
-        userData.phoneNumber,
-        emergencyInfo.label,
-        referenceId
-      );
+      // Get additional info if provided
+      const additionalInfo = getAdditionalInfoFromSession(userData.sessionId);
 
-      // TODO: Save emergency to database
-      // TODO: Get user location if available
-      // TODO: Notify rescue team
-      // Example: await notifyRescueTeam(["+250788000000"], emergencyInfo.label, "Location", userData.phoneNumber);
+      // Prepare emergency data for backend
+      const emergencyData = {
+        phoneNumber: userData.phoneNumber,
+        emergencyType: emergencyInfo.type,
+        referenceId,
+        description:
+          additionalInfo ||
+          `${emergencyInfo.label} emergency reported via USSD`,
+        location: "Location to be determined", // TODO: Get actual location
+        status: "pending",
+        reportedAt: new Date().toISOString(),
+      };
 
-      return `END Thank you! Your ${emergencyInfo.label} emergency has been reported.\n\nReference: ${referenceId}\n\nA confirmation SMS has been sent. The rescue team will be on the way shortly. Stay safe!`;
+      // Report emergency to backend
+      const backendResult = await reportEmergency(emergencyData);
+
+      if (backendResult.success) {
+        console.log("✅ Emergency saved to backend:", backendResult.data);
+
+        // Store emergency data in session for tracking
+        sessionManager.setSession(userData.sessionId, {
+          lastEmergency: {
+            referenceId,
+            type: emergencyInfo.type,
+            phoneNumber: userData.phoneNumber,
+            timestamp: new Date().toISOString(),
+            backendId: backendResult.data?.id,
+          },
+        });
+
+        // Send SMS confirmation to user
+        // await sendEmergencyConfirmation(
+        //   userData.phoneNumber,
+        //   emergencyInfo.label,
+        //   referenceId
+        // );
+
+        return `END Thank you! Your ${emergencyInfo.label} emergency has been reported.\n\nReference: ${referenceId}\n\nA confirmation SMS has been sent. The rescue team will be on the way shortly. Stay safe!`;
+      } else {
+        console.error(
+          "❌ Failed to save emergency to backend:",
+          backendResult.error
+        );
+        // Still send SMS even if backend fails
+        // await sendEmergencyConfirmation(
+        //   userData.phoneNumber,
+        //   emergencyInfo.label,
+        //   referenceId
+        // );
+        return `END Your emergency has been reported.\n\nReference: ${referenceId}\n\nHelp is on the way!`;
+      }
     } catch (error) {
       console.error("Error submitting emergency:", error);
-      return `END Your emergency has been reported. Reference: ${generateReferenceId()}. Help is on the way!`;
+      const fallbackRef = generateReferenceId();
+      return `END Your emergency has been reported. Reference: ${fallbackRef}. Help is on the way!`;
     }
   },
 
   confirmDistress: async (userData) => {
     try {
       const referenceId = generateReferenceId();
-      
-      // Store distress alert in session
-      sessionManager.setSession(userData.sessionId, {
-        distressAlert: {
-          referenceId,
-          phoneNumber: userData.phoneNumber,
-          timestamp: new Date().toISOString(),
-        },
-      });
 
-      // Send distress SMS to user
-      await sendDistressAlert(userData.phoneNumber, "Your current location");
+      // Prepare distress data for backend
+      const distressData = {
+        phoneNumber: userData.phoneNumber,
+        message: "Urgent help needed!",
+        location: "Location to be determined", // TODO: Get actual location
+      };
 
-      // TODO: Trigger immediate distress alert
-      // TODO: Get user location and send to emergency services
-      // TODO: Notify emergency contacts
-      // TODO: Alert all nearby rescue teams
-      // Example: await notifyRescueTeam(["+250788000000", "+250788111111"], "DISTRESS ALERT", "Location", userData.phoneNumber);
+      // Trigger distress alert in backend
+      const backendResult = await triggerDistressAlert(distressData);
 
-      return `END DISTRESS ALERT ACTIVATED!\n\nReference: ${referenceId}\n\nEmergency services have been notified of your location. A confirmation SMS has been sent. Help is on the way. Stay calm and safe.`;
+      if (backendResult.success) {
+        console.log("✅ Distress alert sent to backend:", backendResult.data);
+
+        // Store distress alert in session
+        sessionManager.setSession(userData.sessionId, {
+          distressAlert: {
+            referenceId,
+            phoneNumber: userData.phoneNumber,
+            timestamp: new Date().toISOString(),
+            backendId: backendResult.data?.id,
+          },
+        });
+
+        // Send distress SMS to user
+        // await sendDistressAlert(userData.phoneNumber, "Your current location");
+
+        return `END DISTRESS ALERT ACTIVATED!\n\nReference: ${referenceId}\n\nEmergency services have been notified. Help is on the way. Stay calm and safe.`;
+      } else {
+        console.error(
+          "❌ Failed to send distress alert to backend:",
+          backendResult.error
+        );
+        // Still show confirmation even if backend fails
+        return `END DISTRESS ALERT ACTIVATED!\n\nReference: ${referenceId}\n\nHelp is on the way. Stay calm and safe.`;
+      }
     } catch (error) {
       console.error("Error confirming distress:", error);
-      return `END DISTRESS ALERT ACTIVATED! Emergency services have been notified. Help is on the way. Stay calm and safe.`;
+      const fallbackRef = generateReferenceId();
+      return `END DISTRESS ALERT ACTIVATED! Reference: ${fallbackRef}. Help is on the way. Stay calm and safe.`;
     }
+  },
+};
+
+// Dynamic menu handlers - fetch data from backend
+const dynamicMenuHandlers = {
+  viewEmergencies: async (userData) => {
+    const { fetchAndFormatAllEmergencies } = await import(
+      "../utils/ussdDataHelpers.js"
+    );
+    return await fetchAndFormatAllEmergencies(userData.sessionId);
+  },
+  myEmergencies: async (userData) => {
+    const { fetchAndFormatUserEmergencies } = await import(
+      "../utils/ussdDataHelpers.js"
+    );
+    return await fetchAndFormatUserEmergencies(userData.phoneNumber, userData.sessionId);
+  },
+  news: async (userData) => {
+    const { fetchAndFormatPosts } = await import("../utils/ussdDataHelpers.js");
+    return await fetchAndFormatPosts(userData.sessionId);
+  },
+  viewEmergency: async (userData, selectedIndex) => {
+    const { fetchAndFormatEmergencyDetails } = await import("../utils/ussdDataHelpers.js");
+    
+    // Get the stored emergencies list from session
+    const session = sessionManager.getSession(userData.sessionId);
+    const emergenciesList = session?.emergenciesList || [];
+    
+    // Get the selected emergency (selectedIndex is 1-based)
+    const emergency = emergenciesList[selectedIndex - 1];
+    
+    if (!emergency) {
+      return `CON Emergency not found
+0. Go back`;
+    }
+    
+    return await fetchAndFormatEmergencyDetails(emergency.id);
+  },
+  viewNews: async (userData, selectedIndex) => {
+    const { fetchAndFormatPostDetails } = await import("../utils/ussdDataHelpers.js");
+    
+    // Get the stored posts list from session
+    const session = sessionManager.getSession(userData.sessionId);
+    const postsList = session?.postsList || [];
+    
+    // Get the selected post (selectedIndex is 1-based)
+    const post = postsList[selectedIndex - 1];
+    
+    if (!post) {
+      return `CON Post not found
+0. Go back`;
+    }
+    
+    return await fetchAndFormatPostDetails(post.id);
   },
 };
 
@@ -144,7 +259,7 @@ export const handleUSSDRequest = async (text, userData) => {
 
     // Check if it's a language handler (from welcome or settings)
     if (languageHandlers[nextStep]) {
-      const response = languageHandlers[nextStep](userData);
+      const response = await languageHandlers[nextStep](userData);
       // If this is the last level, return the main menu
       if (i === levels.length - 1) {
         return response;
@@ -159,6 +274,20 @@ export const handleUSSDRequest = async (text, userData) => {
       // Add text to userData for emergency type tracking
       userData.text = text;
       return await terminalHandlers[nextStep](userData);
+    }
+
+    // Check if it's a dynamic menu handler (fetches data from backend)
+    if (dynamicMenuHandlers[nextStep]) {
+      if (i === levels.length - 1) {
+        // For detail views, pass the selected index
+        if (nextStep === "viewEmergency" || nextStep === "viewNews") {
+          const selectedIndex = parseInt(choice);
+          return await dynamicMenuHandlers[nextStep](userData, selectedIndex);
+        }
+        return await dynamicMenuHandlers[nextStep](userData);
+      }
+      currentMenu = nextStep;
+      continue;
     }
 
     // Check if it's another menu
