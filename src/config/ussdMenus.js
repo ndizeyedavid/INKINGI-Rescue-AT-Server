@@ -29,14 +29,16 @@ export const getUssdMenus = (locale = "en") => {
     2. ${t("main.community_posts", {}, locale)}
     3. ${t("main.hotlines", {}, locale)}
     4. ${t("main.distress", {}, locale)}
-    5. ${t("main.settings", {}, locale)}
+    5. ${t("main.ai_assistance", {}, locale)}
+    6. ${t("main.settings", {}, locale)}
     `,
       options: {
         1: "emergencies",
         2: "communityPosts",
         3: "hotlines",
         4: "distress",
-        5: "settings",
+        5: "aiAssistance",
+        6: "settings",
       },
     },
 
@@ -185,6 +187,36 @@ export const getUssdMenus = (locale = "en") => {
       options: {
         0: "main",
       },
+    },
+
+    aiAssistance: {
+      text: `CON ${t("ai_assistance.title", {}, locale)}
+    ${t("ai_assistance.select_emergency", {}, locale)}
+    1. ${t("ai_assistance.fire", {}, locale)}
+    2. ${t("ai_assistance.medical", {}, locale)}
+    3. ${t("ai_assistance.accident", {}, locale)}
+    4. ${t("ai_assistance.crime", {}, locale)}
+    5. ${t("ai_assistance.custom", {}, locale)}
+    0. ${t("ai_assistance.go_back", {}, locale)}
+    `,
+      options: {
+        1: "getAIGuidance",
+        2: "getAIGuidance",
+        3: "getAIGuidance",
+        4: "getAIGuidance",
+        5: "customAIRequest",
+        0: "main",
+      },
+    },
+
+    customAIRequest: {
+      text: `CON ${t("ai_assistance.custom_prompt", {}, locale)}
+    1. ${t("common.go_back", {}, locale)}
+    `,
+      options: {
+        1: "aiAssistance",
+      },
+      acceptsInput: true,
     },
   };
 };

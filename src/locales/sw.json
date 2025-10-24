@@ -14,6 +14,7 @@
     "community_posts": "Machapisho ya Jamii",
     "hotlines": "Simu za Dharura",
     "distress": "Msaada wa Haraka",
+    "ai_assistance": "Msaada wa AI",
     "settings": "Mipangilio",
     "go_back": "Rudi nyuma"
   },
@@ -103,6 +104,19 @@
     "your_emergencies": "Dharura Zako ({{count}})",
     "by": "Na",
     "go_back": "Rudi nyuma"
+  },
+  "ai_assistance": {
+    "title": "Msaada wa AI wa Dharura",
+    "select_emergency": "Chagua aina ya dharura kupata ushauri wa AI",
+    "fire": "Dharura ya Moto",
+    "medical": "Dharura ya Matibabu",
+    "accident": "Ajali",
+    "crime": "Uhalifu/Usalama",
+    "custom": "Uliza Swali Maalum",
+    "go_back": "Rudi nyuma",
+    "custom_prompt": "Andika swali lako la dharura au bonyeza 1 kurudi nyuma",
+    "getting_guidance": "Kupata ushauri wa AI...",
+    "guidance_title": "Ushauri wa AI wa Dharura"
   },
   "common": {
     "go_back": "Rudi nyuma",

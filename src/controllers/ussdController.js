@@ -13,6 +13,7 @@ import {
   triggerDistressAlert,
   getPosts,
 } from "../services/backendApiService.js";
+import { getEmergencyGuidance } from "../services/aiService.js";
 
 // Language handlers - set language and redirect to main menu
 export const languageHandlers = {
@@ -64,6 +65,38 @@ const getAdditionalInfoFromSession = (sessionId) => {
 
 // Terminal handlers - actions that end the USSD session
 export const terminalHandlers = {
+  getAIGuidance: async (userData) => {
+    try {
+      const locale = userData.locale || "en";
+      
+      // Get emergency type from navigation path
+      const emergencyTypeMap = {
+        1: "fire",
+        2: "medical",
+        3: "accident",
+        4: "crime",
+      };
+      
+      const levels = userData.text.split("*");
+      const aiMenuChoice = levels[levels.length - 1];
+      const emergencyType = emergencyTypeMap[aiMenuChoice] || "other";
+      
+      // Get AI guidance
+      const result = await getEmergencyGuidance(emergencyType, null, locale);
+      
+      if (result.success) {
+        return `END ${t("ai_assistance.guidance_title", {}, locale)}\n\n${result.guidance}\n\nStay safe!`;
+      } else {
+        // Return default guidance if AI fails
+        return `END ${t("ai_assistance.guidance_title", {}, locale)}\n\n${result.guidance}\n\nStay safe!`;
+      }
+    } catch (error) {
+      console.error("Error getting AI guidance:", error);
+      const locale = userData.locale || "en";
+      return `END ${t("responses.unable_to_load", { item: "AI guidance" }, locale)}`;
+    }
+  },
+
   submitEmergency: async (userData) => {
     try {
       // Generate reference ID
@@ -287,6 +320,27 @@ export const handleUSSDRequest = async (text, userData) => {
           currentMenu = "confirmEmergency";
           continue;
         }
+      }
+    }
+
+    // Special handling for customAIRequest menu - accepts free text input
+    if (currentMenu === "customAIRequest") {
+      // Check if this is the last input (user just entered text or pressed 1)
+      if (i === levels.length - 1) {
+        if (choice !== "1") {
+          // User entered custom question
+          const locale = userData.locale || "en";
+          
+          // Get AI guidance for custom question
+          const result = await getEmergencyGuidance(null, choice, locale);
+          
+          if (result.success) {
+            return `END ${t("ai_assistance.guidance_title", {}, locale)}\n\n${result.guidance}\n\nStay safe!`;
+          } else {
+            return `END ${t("ai_assistance.guidance_title", {}, locale)}\n\n${result.guidance}\n\nStay safe!`;
+          }
+        }
+        // If user pressed 1, continue with normal navigation (go back)
       }
     }
 

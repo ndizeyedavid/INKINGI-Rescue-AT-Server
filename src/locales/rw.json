@@ -14,6 +14,7 @@
     "community_posts": "Amakuru y'Abaturage",
     "hotlines": "Telefoni z'Ubufasha",
     "distress": "Akaga Gakomeye",
+    "ai_assistance": "Ubufasha bwa AI",
     "settings": "Igenamiterere",
     "go_back": "Subira inyuma"
   },
@@ -103,6 +104,19 @@
     "your_emergencies": "Ibyihutirwa Byawe ({{count}})",
     "by": "Na",
     "go_back": "Subira inyuma"
+  },
+  "ai_assistance": {
+    "title": "Ubufasha bwa AI mu Byihutirwa",
+    "select_emergency": "Hitamo ubwoko bw'ikibabaje kugira ngo ubone ubufasha bwa AI",
+    "fire": "Umuriro",
+    "medical": "Ubuvuzi bwihutirwa",
+    "accident": "Impanuka",
+    "crime": "Icyaha/Umutekano",
+    "custom": "Baza Ikibazo Cyawe",
+    "go_back": "Subira inyuma",
+    "custom_prompt": "Andika ikibazo cyawe cy'ikibabaje cyangwa ukande 1 kugira ngo usubire inyuma",
+    "getting_guidance": "Turimo kubona ubufasha bwa AI...",
+    "guidance_title": "Ubufasha bwa AI mu Byihutirwa"
   },
   "common": {
     "go_back": "Subira inyuma",

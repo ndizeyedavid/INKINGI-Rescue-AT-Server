@@ -14,6 +14,7 @@
     "community_posts": "Publications Communautaires",
     "hotlines": "Lignes d'Urgence",
     "distress": "Détresse",
+    "ai_assistance": "Assistance IA",
     "settings": "Paramètres",
     "go_back": "Retour"
   },
@@ -103,6 +104,19 @@
     "your_emergencies": "Vos Urgences ({{count}})",
     "by": "Par",
     "go_back": "Retour"
+  },
+  "ai_assistance": {
+    "title": "Assistance IA d'Urgence",
+    "select_emergency": "Sélectionnez le type d'urgence pour obtenir des conseils IA",
+    "fire": "Incendie",
+    "medical": "Urgence Médicale",
+    "accident": "Accident",
+    "crime": "Crime/Sécurité",
+    "custom": "Poser une Question Personnalisée",
+    "go_back": "Retour",
+    "custom_prompt": "Tapez votre question d'urgence ou appuyez sur 1 pour revenir",
+    "getting_guidance": "Obtention des conseils IA...",
+    "guidance_title": "Conseils IA d'Urgence"
   },
   "common": {
     "go_back": "Retour",

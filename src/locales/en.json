@@ -14,6 +14,7 @@
     "community_posts": "Community Posts",
     "hotlines": "Hotlines",
     "distress": "Distress",
+    "ai_assistance": "AI Assistance",
     "settings": "Settings",
     "go_back": "Go back"
   },
@@ -103,6 +104,19 @@
     "your_emergencies": "Your Emergencies ({{count}})",
     "by": "By",
     "go_back": "Go back"
+  },
+  "ai_assistance": {
+    "title": "AI Emergency Assistance",
+    "select_emergency": "Select emergency type for AI guidance",
+    "fire": "Fire Emergency",
+    "medical": "Medical Emergency",
+    "accident": "Accident",
+    "crime": "Crime/Safety",
+    "custom": "Ask Custom Question",
+    "go_back": "Go back",
+    "custom_prompt": "Type your emergency question or press 1 to go back",
+    "getting_guidance": "Getting AI guidance...",
+    "guidance_title": "AI Emergency Guidance"
   },
   "common": {
     "go_back": "Go back",
