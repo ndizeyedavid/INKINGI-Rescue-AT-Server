@@ -1,280 +1,193 @@
-// USSD Menu Configuration
-export const ussdMenus = {
-  welcome: {
-    text: `CON Welcome to INKINGI Rescue
-    Choose language to continue
-    1. English
-    2. Ikinyarwanda
-    3. Français
-    4. Kiswahili
-    `,
-    options: {
-      1: "en",
-      2: "rw",
-      3: "fr",
-      4: "sw",
-    },
-  },
+import { t } from "./i18n.js";
 
-  main: {
-    text: `CON Choose type of service
-    1. Emergencies
-    2. Community Posts
-    3. Hotlines
-    4. Distress
-    5. Settings
+/**
+ * Generate USSD menu text with translations
+ * @param {string} locale - Current locale
+ * @returns {Object} USSD menus with translated text
+ */
+export const getUssdMenus = (locale = "en") => {
+  return {
+    welcome: {
+      text: `CON ${t("welcome.title", {}, locale)}
+    ${t("welcome.select_language", {}, locale)}
+    1. ${t("welcome.english", {}, locale)}
+    2. ${t("welcome.kinyarwanda", {}, locale)}
+    3. ${t("welcome.french", {}, locale)}
+    4. ${t("welcome.swahili", {}, locale)}
     `,
-    options: {
-      1: "emergencies",
-      2: "communityPosts",
-      3: "hotlines",
-      4: "distress",
-      5: "settings",
+      options: {
+        1: "en",
+        2: "rw",
+        3: "fr",
+        4: "sw",
+      },
     },
-  },
 
-  emergencies: {
-    text: `CON Emergencies
-    1. View Emergencies
-    2. Report Emergency
-    3. My Emergencies
-    0. Go back
+    main: {
+      text: `CON ${t("main.title", {}, locale)}
+    1. ${t("main.emergencies", {}, locale)}
+    2. ${t("main.community_posts", {}, locale)}
+    3. ${t("main.hotlines", {}, locale)}
+    4. ${t("main.distress", {}, locale)}
+    5. ${t("main.settings", {}, locale)}
     `,
-    options: {
-      1: "viewEmergencies",
-      2: "reportEmergency",
-      3: "myEmergencies",
-      0: "main",
+      options: {
+        1: "emergencies",
+        2: "communityPosts",
+        3: "hotlines",
+        4: "distress",
+        5: "settings",
+      },
     },
-  },
 
-  communityPosts: {
-    text: `CON Community Posts
-    1. News
-    2. Events
-    0. Go back
+    emergencies: {
+      text: `CON ${t("emergencies.title", {}, locale)}
+    1. ${t("emergencies.view_emergencies", {}, locale)}
+    2. ${t("emergencies.report_emergency", {}, locale)}
+    3. ${t("emergencies.my_emergencies", {}, locale)}
+    0. ${t("emergencies.go_back", {}, locale)}
     `,
-    options: {
-      1: "news",
-      2: "events",
-      0: "main",
+      options: {
+        1: "viewEmergencies",
+        2: "reportEmergency",
+        3: "myEmergencies",
+        0: "main",
+      },
     },
-  },
 
-  hotlines: {
-    text: `CON Hotlines 
-    1. Police - 112
-    2. Fire - 113
-    3. Ambulance - 114
-    0. Go back
+    communityPosts: {
+      text: `CON ${t("community_posts.title", {}, locale)}
+    1. ${t("community_posts.news", {}, locale)}
+    2. ${t("community_posts.events", {}, locale)}
+    0. ${t("community_posts.go_back", {}, locale)}
     `,
-    options: {
-      1: "main",
-      2: "main",
-      3: "main",
-      0: "main",
+      options: {
+        1: "news",
+        2: "events",
+        0: "main",
+      },
     },
-  },
 
-  distress: {
-    text: `CON Are you in an Immediate emergency? if yes, kindly confirm and help will be on the way.
-    1. Confirm
-    0. cancel
+    hotlines: {
+      text: `CON ${t("hotlines.title", {}, locale)}
+    1. ${t("hotlines.police", {}, locale)}
+    2. ${t("hotlines.fire", {}, locale)}
+    3. ${t("hotlines.ambulance", {}, locale)}
+    0. ${t("hotlines.go_back", {}, locale)}
     `,
-    options: {
-      1: "confirmDistress",
-      0: "main",
+      options: {
+        1: "main",
+        2: "main",
+        3: "main",
+        0: "main",
+      },
     },
-  },
 
-  settings: {
-    text: `CON Settings
-    1. Change Language
-    2. Terms of Service
-    3. Privacy Policy
-    0. Go back
+    distress: {
+      text: `CON ${t("distress.message", {}, locale)}
+    1. ${t("distress.confirm", {}, locale)}
+    0. ${t("distress.cancel", {}, locale)}
     `,
-    options: {
-      1: "languages",
-      2: "terms",
-      3: "privacy",
-      0: "main",
+      options: {
+        1: "confirmDistress",
+        0: "main",
+      },
     },
-  },
 
-  //  sub screens
-  viewEmergencies: {
-    text: `CON Found {count} emergencies
-        1. emergency type - details
-        2. emergency type - details
-        3. emergency type - details
-        0. go back
-        `,
-    options: {
-      1: "viewEmergency",
-      2: "viewEmergency",
-      3: "viewEmergency",
-      0: "emergencies",
-    },
-  },
-
-  reportEmergency: {
-    text: `CON Type of emergency
-    1. Fire
-    2. Medical
-    3. Assault
-    4. Corruption
-    5. Accident
-    6. Other
-    0. Go back
+    settings: {
+      text: `CON ${t("settings.title", {}, locale)}
+    1. ${t("settings.change_language", {}, locale)}
+    2. ${t("settings.terms_of_service", {}, locale)}
+    3. ${t("settings.privacy_policy", {}, locale)}
+    0. ${t("settings.go_back", {}, locale)}
     `,
-    options: {
-      1: "additionalInfo",
-      2: "additionalInfo",
-      3: "additionalInfo",
-      4: "additionalInfo",
-      5: "additionalInfo",
-      6: "additionalInfo",
-      0: "emergencies",
+      options: {
+        1: "languages",
+        2: "terms",
+        3: "privacy",
+        0: "main",
+      },
     },
-  },
 
-  additionalInfo: {
-    text: `CON Please tell us more about the emergency(optional)
-    1. Continue
-    0. Go back
+    //  sub screens
+    reportEmergency: {
+      text: `CON ${t("report_emergency.title", {}, locale)}
+    1. ${t("report_emergency.fire", {}, locale)}
+    2. ${t("report_emergency.medical", {}, locale)}
+    3. ${t("report_emergency.accident", {}, locale)}
+    4. ${t("report_emergency.crime", {}, locale)}
+    5. ${t("report_emergency.other", {}, locale)}
+    0. ${t("report_emergency.go_back", {}, locale)}
     `,
-    options: {
-      1: "confirmEmergency",
-      0: "reportEmergency",
+      options: {
+        1: "additionalInfo",
+        2: "additionalInfo",
+        3: "additionalInfo",
+        4: "additionalInfo",
+        5: "additionalInfo",
+        0: "emergencies",
+      },
     },
-  },
 
-  confirmEmergency: {
-    text: `CON Are you sure you want to report this emergency?
-    1. Confirm
-    0. Cancel
+    additionalInfo: {
+      text: `CON ${t("report_emergency.additional_info_prompt", {}, locale)}
+    1. ${t("common.continue", {}, locale)}
+    0. ${t("common.go_back", {}, locale)}
     `,
-    options: {
-      1: "submitEmergency",
-      0: "emergencies",
+      options: {
+        1: "confirmEmergency",
+        0: "reportEmergency",
+      },
+      acceptsInput: true, // Flag to indicate this menu accepts free text
     },
-  },
 
-  thankYou: {
-    text: `CON Thank you! The rescue team will be on the way, kindly follow these guidelines as help is on the way
-    {AI content here}
-    0. Go back
+    confirmEmergency: {
+      text: `CON Are you sure you want to report this emergency?
+    1. ${t("common.confirm", {}, locale)}
+    0. ${t("common.cancel", {}, locale)}
     `,
-    options: {
-      0: "main",
+      options: {
+        1: "submitEmergency",
+        0: "emergencies",
+      },
     },
-  },
 
-  myEmergencies: {
-    text: `CON My emergencies
-    1. emergency type - details
-    2. emergency type - details
-    3. emergency type - details
-    0. go back
+    languages: {
+      text: `CON ${t("languages.title", {}, locale)}
+    1. ${t("languages.english", {}, locale)}
+    2. ${t("languages.kinyarwanda", {}, locale)}
+    3. ${t("languages.french", {}, locale)}
+    4. ${t("languages.swahili", {}, locale)}
+    0. ${t("languages.go_back", {}, locale)}
     `,
-    options: {
-      1: "viewEmergency",
-      2: "viewEmergency",
-      3: "viewEmergency",
-      0: "emergencies",
+      options: {
+        1: "en",
+        2: "rw",
+        3: "fr",
+        4: "sw",
+        0: "main",
+      },
     },
-  },
 
-  viewEmergency: {
-    text: `CON emergency type - details
-    0. go back
+    terms: {
+      text: `CON ${t("settings.terms_of_service", {}, locale)}
+    0. ${t("common.go_back", {}, locale)}
     `,
-    options: {
-      0: "myEmergencies",
+      options: {
+        0: "main",
+      },
     },
-  },
 
-  news: {
-    text: `CON News
-    1. News - details
-    2. News - details
-    3. News - details
-    0. go back
+    privacy: {
+      text: `CON ${t("settings.privacy_policy", {}, locale)}
+    0. ${t("common.go_back", {}, locale)}
     `,
-    options: {
-      1: "viewNews",
-      2: "viewNews",
-      3: "viewNews",
-      0: "communityPosts",
+      options: {
+        0: "main",
+      },
     },
-  },
-
-  viewNews: {
-    text: `CON News - details
-    0. go back
-    `,
-    options: {
-      0: "news",
-    },
-  },
-
-  events: {
-    text: `CON Events
-    1. Event - details
-    2. Event - details
-    3. Event - details
-    0. go back
-    `,
-    options: {
-      1: "viewEvent",
-      2: "viewEvent",
-      3: "viewEvent",
-      0: "communityPosts",
-    },
-  },
-
-  viewEvent: {
-    text: `CON Event - details
-    0. go back
-    `,
-    options: {
-      0: "events",
-    },
-  },
-
-  languages: {
-    text: `CON Change language
-    1. English
-    2. Rwandan
-    3. French
-    4. Swahili
-    0. Go back
-    `,
-    options: {
-      1: "en",
-      2: "rw",
-      3: "fr",
-      4: "sw",
-      0: "main",
-    },
-  },
-
-  terms: {
-    text: `CON Terms of Service
-    0. Go back
-    `,
-    options: {
-      0: "main",
-    },
-  },
-
-  privacy: {
-    text: `CON Privacy Policy
-    0. Go back
-    `,
-    options: {
-      0: "main",
-    },
-  },
+  };
 };
+
+// Default export for backward compatibility
+export const ussdMenus = getUssdMenus("en");

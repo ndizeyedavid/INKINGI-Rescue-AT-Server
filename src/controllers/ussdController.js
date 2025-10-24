@@ -1,6 +1,7 @@
-import { ussdMenus } from "../config/ussdMenus.js";
+import { getUssdMenus } from "../config/ussdMenus.js";
 import { sessionManager } from "../utils/sessionManager.js";
 import { EMERGENCY_TYPE_LABELS } from "../config/constants.js";
+import { t } from "../config/i18n.js";
 import {
   sendEmergencyConfirmation,
   sendDistressAlert,
@@ -17,19 +18,23 @@ import {
 export const languageHandlers = {
   en: async (userData) => {
     sessionManager.setLanguage(userData.sessionId, "en");
-    return ussdMenus.main.text;
+    const menus = getUssdMenus("en");
+    return menus.main.text;
   },
   rw: async (userData) => {
     sessionManager.setLanguage(userData.sessionId, "rw");
-    return ussdMenus.main.text;
+    const menus = getUssdMenus("rw");
+    return menus.main.text;
   },
   fr: async (userData) => {
     sessionManager.setLanguage(userData.sessionId, "fr");
-    return ussdMenus.main.text;
+    const menus = getUssdMenus("fr");
+    return menus.main.text;
   },
   sw: async (userData) => {
     sessionManager.setLanguage(userData.sessionId, "sw");
-    return ussdMenus.main.text;
+    const menus = getUssdMenus("sw");
+    return menus.main.text;
   },
 };
 
@@ -184,20 +189,24 @@ const dynamicMenuHandlers = {
     const { fetchAndFormatAllEmergencies } = await import(
       "../utils/ussdDataHelpers.js"
     );
-    return await fetchAndFormatAllEmergencies(userData.sessionId);
+    const locale = userData.locale || "en";
+    return await fetchAndFormatAllEmergencies(userData.sessionId, locale);
   },
   myEmergencies: async (userData) => {
     const { fetchAndFormatUserEmergencies } = await import(
       "../utils/ussdDataHelpers.js"
     );
-    return await fetchAndFormatUserEmergencies(userData.phoneNumber, userData.sessionId);
+    const locale = userData.locale || "en";
+    return await fetchAndFormatUserEmergencies(userData.phoneNumber, userData.sessionId, locale);
   },
   news: async (userData) => {
     const { fetchAndFormatPosts } = await import("../utils/ussdDataHelpers.js");
-    return await fetchAndFormatPosts(userData.sessionId);
+    const locale = userData.locale || "en";
+    return await fetchAndFormatPosts(userData.sessionId, locale);
   },
   viewEmergency: async (userData, selectedIndex) => {
     const { fetchAndFormatEmergencyDetails } = await import("../utils/ussdDataHelpers.js");
+    const locale = userData.locale || "en";
     
     // Get the stored emergencies list from session
     const session = sessionManager.getSession(userData.sessionId);
@@ -207,14 +216,15 @@ const dynamicMenuHandlers = {
     const emergency = emergenciesList[selectedIndex - 1];
     
     if (!emergency) {
-      return `CON Emergency not found
-0. Go back`;
+      return `CON ${t("responses.emergency_not_found", {}, locale)}
+0. ${t("common.go_back", {}, locale)}`;
     }
     
-    return await fetchAndFormatEmergencyDetails(emergency.id);
+    return await fetchAndFormatEmergencyDetails(emergency.id, locale);
   },
   viewNews: async (userData, selectedIndex) => {
     const { fetchAndFormatPostDetails } = await import("../utils/ussdDataHelpers.js");
+    const locale = userData.locale || "en";
     
     // Get the stored posts list from session
     const session = sessionManager.getSession(userData.sessionId);
@@ -224,11 +234,11 @@ const dynamicMenuHandlers = {
     const post = postsList[selectedIndex - 1];
     
     if (!post) {
-      return `CON Post not found
-0. Go back`;
+      return `CON ${t("responses.post_not_found", {}, locale)}
+0. ${t("common.go_back", {}, locale)}`;
     }
     
-    return await fetchAndFormatPostDetails(post.id);
+    return await fetchAndFormatPostDetails(post.id, locale);
   },
 };
 
@@ -236,26 +246,94 @@ const dynamicMenuHandlers = {
 export const handleUSSDRequest = async (text, userData) => {
   const levels = text.split("*");
 
+  // Get user's language preference from session (default to 'en')
+  const session = sessionManager.getSession(userData.sessionId);
+  const locale = session?.language || "en";
+  const ussdMenus = getUssdMenus(locale);
+
   // Initial request - show welcome screen
   if (text === "") {
     return ussdMenus.welcome.text;
   }
 
-  // Check if user has a session
-  let session = sessionManager.getSession(userData.sessionId);
-
   // Navigate through menu levels
   let currentMenu = "welcome";
+  let customTextEntered = false;
 
   for (let i = 0; i < levels.length; i++) {
     const choice = levels[i];
-    const menu = ussdMenus[currentMenu];
-
-    if (!menu || !menu.options[choice]) {
-      return "END Invalid option selected";
+    
+    // Special handling for additionalInfo menu - accepts free text input
+    if (currentMenu === "additionalInfo") {
+      // Check if this is the last input (user just entered text or pressed 1/0)
+      if (i === levels.length - 1) {
+        const handled = handleAdditionalInfoInput(text, userData.sessionId);
+        if (handled) {
+          // User entered custom text, show confirmation menu
+          const confirmMenu = getUssdMenus(locale);
+          return confirmMenu.confirmEmergency.text;
+        }
+        // If not handled (user pressed 1 or 0), continue with normal navigation
+      } else {
+        // User previously entered something at additionalInfo
+        // Check if it was custom text (not 1 or 0)
+        if (choice !== "1" && choice !== "0") {
+          // Save the custom text
+          sessionManager.setSession(userData.sessionId, {
+            additionalInfo: choice.trim(),
+          });
+          customTextEntered = true;
+          // Skip to next iteration - the next choice will be for confirmEmergency
+          currentMenu = "confirmEmergency";
+          continue;
+        }
+      }
     }
 
-    const nextStep = menu.options[choice];
+    const menu = ussdMenus[currentMenu];
+
+    // Special handling for dynamic menus (viewEmergencies, myEmergencies, news)
+    // When user is on these menus and selects 1-5, show detail view
+    if (["viewEmergencies", "myEmergencies", "news"].includes(currentMenu)) {
+      if (choice === "0") {
+        // Go back
+        if (currentMenu === "viewEmergencies" || currentMenu === "myEmergencies") {
+          currentMenu = "emergencies";
+          if (i === levels.length - 1) {
+            return ussdMenus.emergencies.text;
+          }
+          continue;
+        } else if (currentMenu === "news") {
+          currentMenu = "communityPosts";
+          if (i === levels.length - 1) {
+            return ussdMenus.communityPosts.text;
+          }
+          continue;
+        }
+      } else if (["1", "2", "3", "4", "5"].includes(choice)) {
+        // View detail
+        const selectedIndex = parseInt(choice);
+        userData.locale = locale;
+        
+        if (currentMenu === "viewEmergencies" || currentMenu === "myEmergencies") {
+          return await dynamicMenuHandlers.viewEmergency(userData, selectedIndex);
+        } else if (currentMenu === "news") {
+          return await dynamicMenuHandlers.viewNews(userData, selectedIndex);
+        }
+      } else {
+        return `END ${t("responses.invalid_option", {}, locale)}`;
+      }
+    }
+
+    if (!menu) {
+      return `END ${t("responses.invalid_option", {}, locale)}`;
+    }
+
+    const nextStep = menu.options ? menu.options[choice] : null;
+    
+    if (!nextStep) {
+      return `END ${t("responses.invalid_option", {}, locale)}`;
+    }
 
     // Check if it's a language handler (from welcome or settings)
     if (languageHandlers[nextStep]) {
@@ -273,17 +351,14 @@ export const handleUSSDRequest = async (text, userData) => {
     if (terminalHandlers[nextStep]) {
       // Add text to userData for emergency type tracking
       userData.text = text;
+      userData.locale = locale;
       return await terminalHandlers[nextStep](userData);
     }
 
     // Check if it's a dynamic menu handler (fetches data from backend)
     if (dynamicMenuHandlers[nextStep]) {
       if (i === levels.length - 1) {
-        // For detail views, pass the selected index
-        if (nextStep === "viewEmergency" || nextStep === "viewNews") {
-          const selectedIndex = parseInt(choice);
-          return await dynamicMenuHandlers[nextStep](userData, selectedIndex);
-        }
+        userData.locale = locale;
         return await dynamicMenuHandlers[nextStep](userData);
       }
       currentMenu = nextStep;
@@ -301,7 +376,27 @@ export const handleUSSDRequest = async (text, userData) => {
     }
   }
 
-  return "END Invalid navigation";
+  return `END ${t("responses.invalid_option", {}, locale)}`;
+};
+
+// Helper function to handle additional info input
+const handleAdditionalInfoInput = (text, sessionId) => {
+  const levels = text.split("*");
+  const lastInput = levels[levels.length - 1];
+  
+  // Check if user pressed 1 (skip) or 0 (go back)
+  if (lastInput === "1" || lastInput === "0") {
+    return null; // Let normal navigation handle it
+  }
+  
+  // User entered custom text - save it to session
+  if (lastInput && lastInput.trim().length > 0) {
+    sessionManager.setSession(sessionId, {
+      additionalInfo: lastInput.trim(),
+    });
+  }
+  
+  return true; // Indicate we handled the input
 };
 
 // USSD Controller - main entry point

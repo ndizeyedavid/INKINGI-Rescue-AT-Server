@@ -4,25 +4,26 @@ import {
   getEmergencies,
   getPosts,
 } from "../services/backendApiService.js";
+import { t } from "../config/i18n.js";
 
 /**
  * Fetch and format all emergencies for USSD display (View Emergencies)
  * @returns {Promise<string>} Formatted USSD menu text
  */
-export const fetchAndFormatAllEmergencies = async (sessionId) => {
+export const fetchAndFormatAllEmergencies = async (sessionId, locale = "en") => {
   try {
     const result = await getEmergencies({ limit: 5 });
 
     if (!result.success || !result.data?.emergencies) {
-      return `CON No emergencies found
-0. Go back`;
+      return `CON ${t("responses.no_emergencies", {}, locale)}
+0. ${t("common.go_back", {}, locale)}`;
     }
 
     const emergencies = result.data.emergencies.slice(0, 5); // Show max 5
 
     if (emergencies.length === 0) {
-      return `CON No emergencies found
-0. Go back`;
+      return `CON ${t("responses.no_emergencies", {}, locale)}
+0. ${t("common.go_back", {}, locale)}`;
     }
 
     // Store emergencies in session for later selection
@@ -30,7 +31,7 @@ export const fetchAndFormatAllEmergencies = async (sessionId) => {
       emergenciesList: emergencies,
     });
 
-    let menuText = `CON All Emergencies (${result.data.total})\n`;
+    let menuText = `CON ${t("emergency_list.all_emergencies", { count: result.data.total }, locale)}\n`;
 
     emergencies.forEach((emergency, index) => {
       const type = emergency.type || "Emergency";
@@ -39,16 +40,16 @@ export const fetchAndFormatAllEmergencies = async (sessionId) => {
       const userName = emergency.user
         ? `${emergency.user.firstName} ${emergency.user.lastName}`
         : "Unknown";
-      menuText += `${index + 1}. ${type} - ${status}\n   By: ${userName}\n`;
+      menuText += `${index + 1}. ${type} - ${status}\n   ${t("emergency_list.by", {}, locale)}: ${userName}\n`;
     });
 
-    menuText += `0. Go back`;
+    menuText += `0. ${t("common.go_back", {}, locale)}`;
 
     return menuText;
   } catch (error) {
     console.error("Error fetching all emergencies:", error);
-    return `CON Unable to load emergencies
-0. Go back`;
+    return `CON ${t("responses.unable_to_load", { item: "emergencies" }, locale)}
+0. ${t("common.go_back", {}, locale)}`;
   }
 };
 
@@ -57,20 +58,20 @@ export const fetchAndFormatAllEmergencies = async (sessionId) => {
  * @param {string} phoneNumber - User phone number
  * @returns {Promise<string>} Formatted USSD menu text
  */
-export const fetchAndFormatUserEmergencies = async (phoneNumber, sessionId) => {
+export const fetchAndFormatUserEmergencies = async (phoneNumber, sessionId, locale = "en") => {
   try {
     const result = await getUserEmergencies(phoneNumber);
 
     if (!result.success || !result.data?.emergencies) {
-      return `CON No emergencies found
-0. Go back`;
+      return `CON ${t("responses.no_emergencies", {}, locale)}
+0. ${t("common.go_back", {}, locale)}`;
     }
 
     const emergencies = result.data.emergencies.slice(0, 5); // Show max 5
 
     if (emergencies.length === 0) {
-      return `CON You have no emergencies
-0. Go back`;
+      return `CON ${t("responses.no_user_emergencies", {}, locale)}
+0. ${t("common.go_back", {}, locale)}`;
     }
 
     // Store emergencies in session for later selection
@@ -78,7 +79,7 @@ export const fetchAndFormatUserEmergencies = async (phoneNumber, sessionId) => {
       emergenciesList: emergencies,
     });
 
-    let menuText = `CON Your Emergencies (${result.data.total})\n`;
+    let menuText = `CON ${t("emergency_list.your_emergencies", { count: result.data.total }, locale)}\n`;
 
     emergencies.forEach((emergency, index) => {
       const type = emergency.type || "Emergency";
@@ -87,13 +88,13 @@ export const fetchAndFormatUserEmergencies = async (phoneNumber, sessionId) => {
       menuText += `${index + 1}. ${type} - ${status} (${id}...)\n`;
     });
 
-    menuText += `0. Go back`;
+    menuText += `0. ${t("common.go_back", {}, locale)}`;
 
     return menuText;
   } catch (error) {
     console.error("Error fetching user emergencies:", error);
-    return `CON Unable to load emergencies
-0. Go back`;
+    return `CON ${t("responses.unable_to_load", { item: "emergencies" }, locale)}
+0. ${t("common.go_back", {}, locale)}`;
   }
 };
 
@@ -102,20 +103,20 @@ export const fetchAndFormatUserEmergencies = async (phoneNumber, sessionId) => {
  * @param {string} sessionId - Session ID
  * @returns {Promise<string>} Formatted USSD menu text
  */
-export const fetchAndFormatPosts = async (sessionId) => {
+export const fetchAndFormatPosts = async (sessionId, locale = "en") => {
   try {
     const result = await getPosts({ limit: 5 });
 
     if (!result.success || !result.data?.posts) {
-      return `CON No posts available
-0. Go back`;
+      return `CON ${t("responses.no_posts", {}, locale)}
+0. ${t("common.go_back", {}, locale)}`;
     }
 
     const posts = result.data.posts.slice(0, 5);
 
     if (posts.length === 0) {
-      return `CON No posts available
-0. Go back`;
+      return `CON ${t("responses.no_posts", {}, locale)}
+0. ${t("common.go_back", {}, locale)}`;
     }
 
     // Store posts in session for later selection
@@ -123,20 +124,20 @@ export const fetchAndFormatPosts = async (sessionId) => {
       postsList: posts,
     });
 
-    let menuText = `CON Community Posts\n`;
+    let menuText = `CON ${t("community_posts.title", {}, locale)}\n`;
 
     posts.forEach((post, index) => {
       const title = post.title?.substring(0, 35) || "Post";
       menuText += `${index + 1}. ${title}...\n`;
     });
 
-    menuText += `0. Go back`;
+    menuText += `0. ${t("common.go_back", {}, locale)}`;
 
     return menuText;
   } catch (error) {
     console.error("Error fetching posts:", error);
-    return `CON Unable to load posts
-0. Go back`;
+    return `CON ${t("responses.unable_to_load", { item: "posts" }, locale)}
+0. ${t("common.go_back", {}, locale)}`;
   }
 };
 
@@ -145,7 +146,7 @@ export const fetchAndFormatPosts = async (sessionId) => {
  * @param {string} emergencyId - Emergency ID
  * @returns {Promise<string>} Formatted USSD menu text
  */
-export const fetchAndFormatEmergencyDetails = async (emergencyId) => {
+export const fetchAndFormatEmergencyDetails = async (emergencyId, locale = "en") => {
   try {
     const { getEmergencyById } = await import(
       "../services/backendApiService.js"
@@ -153,8 +154,8 @@ export const fetchAndFormatEmergencyDetails = async (emergencyId) => {
     const result = await getEmergencyById(emergencyId);
 
     if (!result.success || !result.data) {
-      return `CON Emergency not found
-0. Go back`;
+      return `CON ${t("responses.emergency_not_found", {}, locale)}
+0. ${t("common.go_back", {}, locale)}`;
     }
 
     const emergency = result.data;
@@ -171,21 +172,21 @@ export const fetchAndFormatEmergencyDetails = async (emergencyId) => {
       : "Unknown";
     const userPhone = emergency.user?.phoneNumber || "N/A";
 
-    let menuText = `CON Emergency Details\n`;
-    menuText += `Type: ${type}\n`;
-    menuText += `Status: ${status}\n`;
-    menuText += `Priority: ${priority}\n`;
-    menuText += `Location: ${address}\n`;
-    menuText += `Reported by: ${userName}\n`;
-    menuText += `Phone: ${userPhone}\n`;
-    menuText += `Time: ${createdAt}\n`;
-    menuText += `\n0. Go back`;
+    let menuText = `CON ${t("emergency_details.title", {}, locale)}\n`;
+    menuText += `${t("emergency_details.type", {}, locale)}: ${type}\n`;
+    menuText += `${t("emergency_details.status", {}, locale)}: ${status}\n`;
+    menuText += `${t("emergency_details.priority", {}, locale)}: ${priority}\n`;
+    menuText += `${t("emergency_details.location", {}, locale)}: ${address}\n`;
+    menuText += `${t("emergency_details.reported_by", {}, locale)}: ${userName}\n`;
+    menuText += `${t("emergency_details.phone", {}, locale)}: ${userPhone}\n`;
+    menuText += `${t("emergency_details.time", {}, locale)}: ${createdAt}\n`;
+    menuText += `\n0. ${t("common.go_back", {}, locale)}`;
 
     return menuText;
   } catch (error) {
     console.error("Error fetching emergency details:", error);
-    return `CON Unable to load emergency details
-0. Go back`;
+    return `CON ${t("responses.unable_to_load", { item: "emergency details" }, locale)}
+0. ${t("common.go_back", {}, locale)}`;
   }
 };
 
@@ -194,14 +195,14 @@ export const fetchAndFormatEmergencyDetails = async (emergencyId) => {
  * @param {string} postId - Post ID
  * @returns {Promise<string>} Formatted USSD menu text
  */
-export const fetchAndFormatPostDetails = async (postId) => {
+export const fetchAndFormatPostDetails = async (postId, locale = "en") => {
   try {
     const { getPostById } = await import("../services/backendApiService.js");
     const result = await getPostById(postId);
 
     if (!result.success || !result.data) {
-      return `CON Post not found
-0. Go back`;
+      return `CON ${t("responses.post_not_found", {}, locale)}
+0. ${t("common.go_back", {}, locale)}`;
     }
 
     const post = result.data;
@@ -212,18 +213,18 @@ export const fetchAndFormatPostDetails = async (postId) => {
       ? new Date(post.createdAt).toLocaleString()
       : "N/A";
 
-    let menuText = `CON Post Details\n`;
+    let menuText = `CON ${t("post_details.title", {}, locale)}\n`;
     menuText += `Title: ${title}\n\n`;
     menuText += `${content}${content.length >= 200 ? "..." : ""}\n\n`;
-    menuText += `By: ${author}\n`;
-    menuText += `Posted: ${createdAt}\n`;
-    menuText += `\n0. Go back`;
+    menuText += `${t("post_details.by", {}, locale)}: ${author}\n`;
+    menuText += `${t("post_details.posted", {}, locale)}: ${createdAt}\n`;
+    menuText += `\n0. ${t("common.go_back", {}, locale)}`;
 
     return menuText;
   } catch (error) {
     console.error("Error fetching post details:", error);
-    return `CON Unable to load post details
-0. Go back`;
+    return `CON ${t("responses.unable_to_load", { item: "post details" }, locale)}
+0. ${t("common.go_back", {}, locale)}`;
   }
 };
 
