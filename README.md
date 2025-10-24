@@ -32,6 +32,7 @@ npm install
 PORT=8080
 AT_API_KEY=your_africas_talking_api_key
 AT_USERNAME=your_africas_talking_username
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
 4. Start the server:
