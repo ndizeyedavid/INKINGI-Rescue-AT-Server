@@ -1,0 +1,127 @@
+{
+  "welcome": {
+    "title": "Karibu kwa INKINGI Rescue",
+    "subtitle": "Mfumo wa Majibu ya Dharura",
+    "select_language": "Chagua Lugha",
+    "english": "Kiingereza",
+    "kinyarwanda": "Kinyarwanda",
+    "french": "Kifaransa",
+    "swahili": "Kiswahili"
+  },
+  "main": {
+    "title": "Menyu Kuu",
+    "emergencies": "Dharura",
+    "community_posts": "Machapisho ya Jamii",
+    "hotlines": "Simu za Dharura",
+    "distress": "Msaada wa Haraka",
+    "ai_assistance": "Msaada wa AI",
+    "settings": "Mipangilio",
+    "go_back": "Rudi nyuma"
+  },
+  "emergencies": {
+    "title": "Dharura",
+    "view_emergencies": "Tazama Dharura",
+    "report_emergency": "Ripoti Dharura",
+    "my_emergencies": "Dharura Zangu",
+    "go_back": "Rudi nyuma"
+  },
+  "report_emergency": {
+    "title": "Ripoti Dharura",
+    "fire": "Moto",
+    "medical": "Matibabu",
+    "accident": "Ajali",
+    "crime": "Uhalifu",
+    "other": "Nyingine",
+    "go_back": "Rudi nyuma",
+    "additional_info_prompt": "Tafadhali tuambie zaidi kuhusu dharura (si lazima)\n\nAndika ujumbe wako au bonyeza 1 kuruka"
+  },
+  "community_posts": {
+    "title": "Machapisho ya Jamii",
+    "news": "Habari",
+    "events": "Matukio",
+    "announcements": "Matangazo",
+    "go_back": "Rudi nyuma"
+  },
+  "hotlines": {
+    "title": "Simu za Dharura",
+    "police": "Polisi: 112",
+    "ambulance": "Ambulensi: 912",
+    "fire": "Zimamoto: 111",
+    "go_back": "Rudi nyuma"
+  },
+  "distress": {
+    "title": "Msaada wa Haraka",
+    "message": "Je, uko katika dharura ya papo hapo? Ikiwa ndiyo, tafadhali thibitisha na msaada utakuja.",
+    "confirm": "Thibitisha",
+    "cancel": "Ghairi"
+  },
+  "settings": {
+    "title": "Mipangilio",
+    "change_language": "Badilisha Lugha",
+    "terms_of_service": "Masharti ya Huduma",
+    "privacy_policy": "Sera ya Faragha",
+    "go_back": "Rudi nyuma"
+  },
+  "languages": {
+    "title": "Chagua Lugha",
+    "english": "Kiingereza",
+    "kinyarwanda": "Kinyarwanda",
+    "french": "Kifaransa",
+    "swahili": "Kiswahili",
+    "go_back": "Rudi nyuma"
+  },
+  "responses": {
+    "emergency_reported": "Asante! Dharura yako ya {{type}} imeripotiwa.\n\nRejea: {{reference}}\n\nSMS ya uthibitisho imetumwa. Timu ya uokoaji itakuja hivi karibuni. Kaa salama!",
+    "emergency_reported_fallback": "Dharura yako imeripotiwa.\n\nRejea: {{reference}}\n\nMsaada unakuja!",
+    "distress_activated": "TAHADHARI YA DHARURA IMEWASHWA!\n\nRejea: {{reference}}\n\nHuduma za dharura zimejulishwa. Msaada unakuja. Tulia na ukae salama.",
+    "invalid_option": "Chaguo batili limechaguliwa",
+    "no_emergencies": "Hakuna dharura zilizopatikana",
+    "no_user_emergencies": "Huna dharura zozote",
+    "no_posts": "Hakuna machapisho yaliyopatikana",
+    "emergency_not_found": "Dharura haijapatikana",
+    "post_not_found": "Chapisho halijapatikana",
+    "unable_to_load": "Imeshindwa kupakia {{item}}"
+  },
+  "emergency_details": {
+    "title": "Maelezo ya Dharura",
+    "type": "Aina",
+    "status": "Hali",
+    "priority": "Kipaumbele",
+    "location": "Mahali",
+    "reported_by": "Imeripotiwa na",
+    "phone": "Simu",
+    "time": "Muda",
+    "go_back": "Rudi nyuma"
+  },
+  "post_details": {
+    "title": "Maelezo ya Chapisho",
+    "by": "Na",
+    "posted": "Kimechapishwa",
+    "go_back": "Rudi nyuma"
+  },
+  "emergency_list": {
+    "all_emergencies": "Dharura Zote ({{count}})",
+    "your_emergencies": "Dharura Zako ({{count}})",
+    "by": "Na",
+    "go_back": "Rudi nyuma"
+  },
+  "ai_assistance": {
+    "title": "Msaada wa AI wa Dharura",
+    "select_emergency": "Chagua aina ya dharura kupata ushauri wa AI",
+    "fire": "Dharura ya Moto",
+    "medical": "Dharura ya Matibabu",
+    "accident": "Ajali",
+    "crime": "Uhalifu/Usalama",
+    "custom": "Uliza Swali Maalum",
+    "go_back": "Rudi nyuma",
+    "custom_prompt": "Andika swali lako la dharura au bonyeza 1 kurudi nyuma",
+    "getting_guidance": "Kupata ushauri wa AI...",
+    "guidance_title": "Ushauri wa AI wa Dharura"
+  },
+  "common": {
+    "go_back": "Rudi nyuma",
+    "cancel": "Ghairi",
+    "confirm": "Thibitisha",
+    "continue": "Endelea"
+  }
+}

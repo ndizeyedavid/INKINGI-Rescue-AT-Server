@@ -2,6 +2,88 @@
 
 All notable changes to the INKINGI Rescue USSD Server project.
 
+## 2025-10-24
+
+### Added
+
+#### Internationalization (i18n)
+
+- **Multi-language Support**: Full localization in 4 languages (English, Kinyarwanda, French, Swahili)
+- **i18n Configuration** (`src/config/i18n.js`): Centralized translation management using i18n-js
+- **Translation Files**: Complete translations for all USSD menus and responses
+  - `src/locales/en.json` - English
+  - `src/locales/rw.json` - Kinyarwanda
+  - `src/locales/fr.json` - French
+  - `src/locales/sw.json` - Swahili
+- **Dynamic Menu Generation**: USSD menus now generated based on user's language preference
+- **Session-based Language Persistence**: User's language choice remembered throughout session
+
+#### AI Emergency Assistance
+
+- **Gemini AI Integration** (`src/services/aiService.js`): Google Gemini AI for emergency guidance
+- **AI System Instructions** (`src/config/ai-instructions.txt`): Comprehensive role definition for emergency response
+- **AI Assistance Menu**: New main menu option for AI-powered emergency guidance
+- **Emergency Type Selection**: AI guidance for Fire, Medical, Accident, Crime/Safety emergencies
+- **Custom AI Questions**: Users can ask specific emergency questions in natural language
+- **Multi-language AI Responses**: AI responds in user's selected language
+- **Fallback Guidance**: Default emergency instructions if AI service unavailable
+- **Streaming Responses**: Efficient response handling using Gemini's streaming API
+
+#### User Input Features
+
+- **Free Text Input**: Support for custom text input in emergency reporting and AI queries
+- **Additional Info Field**: Users can provide custom descriptions when reporting emergencies
+- **Smart Navigation**: Automatic detection of text input vs menu selections
+
+### Changed
+
+#### USSD Menu System
+
+- **Main Menu**: Added AI Assistance option (now 6 options instead of 5)
+- **Dynamic Menus**: All menus now support language switching on-the-fly
+- **Menu Text Generation**: Converted from static to dynamic function-based generation
+- **Navigation Logic**: Enhanced to handle free text input and custom AI requests
+
+#### Emergency Reporting
+
+- **Custom Descriptions**: Users can now provide detailed emergency descriptions
+- **Skip Option**: Users can skip additional info and use default descriptions
+- **Session Storage**: Custom text stored in session for submission
+
+#### API Configuration
+
+- **Gemini API**: Added `GEMINI_API_KEY` environment variable
+- **Model Selection**: Using `gemini-flash-lite-latest` for optimal performance
+
+### Technical Improvements
+
+#### Code Organization
+
+- **Modular i18n System**: Centralized translation management with helper functions
+- **AI Service Layer**: Dedicated service for AI interactions with error handling
+- **Enhanced Session Management**: Support for language preferences and custom input storage
+- **Improved Navigation**: Special handling for dynamic menus and text input
+
+#### Error Handling
+
+- **AI Fallbacks**: Graceful degradation to default guidance when AI unavailable
+- **Translation Fallbacks**: Default to English if translation missing
+- **Input Validation**: Smart detection of menu choices vs custom text
+
+### Dependencies Added
+
+- `i18n-js@^4.5.1` - Internationalization framework
+- `@google/genai@latest` - Google Gemini AI SDK
+
+### Configuration Updates
+
+- `.env.example`: Added `GEMINI_API_KEY` configuration
+- System instructions file for AI behavior definition
+
+---
+
+## 2025-10-23
+
 ### Added
 
 #### Backend API Integration

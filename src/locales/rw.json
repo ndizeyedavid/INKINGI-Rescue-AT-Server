@@ -1,0 +1,127 @@
+{
+  "welcome": {
+    "title": "Murakaza neza kuri INKINGI Rescue",
+    "subtitle": "Sisitemu yo Gusubiza mu Byihutirwa",
+    "select_language": "Hitamo Ururimi",
+    "english": "Icyongereza",
+    "kinyarwanda": "Ikinyarwanda",
+    "french": "Igifaransa",
+    "swahili": "Igiswahili"
+  },
+  "main": {
+    "title": "Ibikubiyemo",
+    "emergencies": "Ibyihutirwa",
+    "community_posts": "Amakuru y'Abaturage",
+    "hotlines": "Telefoni z'Ubufasha",
+    "distress": "Akaga Gakomeye",
+    "ai_assistance": "Ubufasha bwa AI",
+    "settings": "Igenamiterere",
+    "go_back": "Subira inyuma"
+  },
+  "emergencies": {
+    "title": "Ibyihutirwa",
+    "view_emergencies": "Reba Ibyihutirwa",
+    "report_emergency": "Tanga Ikibabaje",
+    "my_emergencies": "Ibyihutirwa Byanjye",
+    "go_back": "Subira inyuma"
+  },
+  "report_emergency": {
+    "title": "Tanga Ikibabaje",
+    "fire": "Umuriro",
+    "medical": "Ubuvuzi",
+    "accident": "Impanuka",
+    "crime": "Icyaha",
+    "other": "Ikindi",
+    "go_back": "Subira inyuma",
+    "additional_info_prompt": "Tubwire byinshi ku kibabaje (bitari ngombwa)\n\nAndika ubutumwa bwawe cyangwa ukande 1 kugirango urenze"
+  },
+  "community_posts": {
+    "title": "Amakuru y'Abaturage",
+    "news": "Amakuru",
+    "events": "Ibirori",
+    "announcements": "Amatangazo",
+    "go_back": "Subira inyuma"
+  },
+  "hotlines": {
+    "title": "Telefoni z'Ubufasha",
+    "police": "Polisi: 112",
+    "ambulance": "Ambulance: 912",
+    "fire": "Abazimya Umuriro: 111",
+    "go_back": "Subira inyuma"
+  },
+  "distress": {
+    "title": "Akaga Gakomeye",
+    "message": "Uri mu kaga gakomeye? Niba ari byo, emeza kandi ubufasha buzaza ako kanya.",
+    "confirm": "Emeza",
+    "cancel": "Hagarika"
+  },
+  "settings": {
+    "title": "Igenamiterere",
+    "change_language": "Hindura Ururimi",
+    "terms_of_service": "Amabwiriza yo Gukoresha",
+    "privacy_policy": "Amabwiriza y'Ibanga",
+    "go_back": "Subira inyuma"
+  },
+  "languages": {
+    "title": "Hitamo Ururimi",
+    "english": "Icyongereza",
+    "kinyarwanda": "Ikinyarwanda",
+    "french": "Igifaransa",
+    "swahili": "Igiswahili",
+    "go_back": "Subira inyuma"
+  },
+  "responses": {
+    "emergency_reported": "Murakoze! Ikibabaje {{type}} cyatanzwe.\n\nNomero: {{reference}}\n\nUbutumwa bwoherejwe kuri telefoni. Abakiza bazaza vuba. Witondere!",
+    "emergency_reported_fallback": "Ikibabaje cyatanzwe.\n\nNomero: {{reference}}\n\nUbufasha buza!",
+    "distress_activated": "AKAGA GAKOMEYE KEMEWE!\n\nNomero: {{reference}}\n\nAbakiza bamenyeshejwe. Ubufasha buza. Komera kandi witondere.",
+    "invalid_option": "Uhisemo utemewe",
+    "no_emergencies": "Nta byihutirwa byabonetse",
+    "no_user_emergencies": "Ntabwo ufite ibyihutirwa",
+    "no_posts": "Nta makuru ahari",
+    "emergency_not_found": "Ikibabaje ntikibonetse",
+    "post_not_found": "Ubutumwa ntibubonetse",
+    "unable_to_load": "Ntibishoboye gupakurura {{item}}"
+  },
+  "emergency_details": {
+    "title": "Ibisobanuro by'Ikibabaje",
+    "type": "Ubwoko",
+    "status": "Uko bimeze",
+    "priority": "Icyihutirwa",
+    "location": "Ahantu",
+    "reported_by": "Byatanzwe na",
+    "phone": "Telefoni",
+    "time": "Igihe",
+    "go_back": "Subira inyuma"
+  },
+  "post_details": {
+    "title": "Ibisobanuro by'Ubutumwa",
+    "by": "Na",
+    "posted": "Byashyizwe",
+    "go_back": "Subira inyuma"
+  },
+  "emergency_list": {
+    "all_emergencies": "Ibyihutirwa Byose ({{count}})",
+    "your_emergencies": "Ibyihutirwa Byawe ({{count}})",
+    "by": "Na",
+    "go_back": "Subira inyuma"
+  },
+  "ai_assistance": {
+    "title": "Ubufasha bwa AI mu Byihutirwa",
+    "select_emergency": "Hitamo ubwoko bw'ikibabaje kugira ngo ubone ubufasha bwa AI",
+    "fire": "Umuriro",
+    "medical": "Ubuvuzi bwihutirwa",
+    "accident": "Impanuka",
+    "crime": "Icyaha/Umutekano",
+    "custom": "Baza Ikibazo Cyawe",
+    "go_back": "Subira inyuma",
+    "custom_prompt": "Andika ikibazo cyawe cy'ikibabaje cyangwa ukande 1 kugira ngo usubire inyuma",
+    "getting_guidance": "Turimo kubona ubufasha bwa AI...",
+    "guidance_title": "Ubufasha bwa AI mu Byihutirwa"
+  },
+  "common": {
+    "go_back": "Subira inyuma",
+    "cancel": "Hagarika",
+    "confirm": "Emeza",
+    "continue": "Komeza"
+  }
+}

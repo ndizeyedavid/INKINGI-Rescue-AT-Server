@@ -1,0 +1,127 @@
+{
+  "welcome": {
+    "title": "Bienvenue à INKINGI Rescue",
+    "subtitle": "Système de Réponse d'Urgence",
+    "select_language": "Sélectionner la Langue",
+    "english": "Anglais",
+    "kinyarwanda": "Kinyarwanda",
+    "french": "Français",
+    "swahili": "Swahili"
+  },
+  "main": {
+    "title": "Menu Principal",
+    "emergencies": "Urgences",
+    "community_posts": "Publications Communautaires",
+    "hotlines": "Lignes d'Urgence",
+    "distress": "Détresse",
+    "ai_assistance": "Assistance IA",
+    "settings": "Paramètres",
+    "go_back": "Retour"
+  },
+  "emergencies": {
+    "title": "Urgences",
+    "view_emergencies": "Voir les Urgences",
+    "report_emergency": "Signaler une Urgence",
+    "my_emergencies": "Mes Urgences",
+    "go_back": "Retour"
+  },
+  "report_emergency": {
+    "title": "Signaler une Urgence",
+    "fire": "Incendie",
+    "medical": "Médical",
+    "accident": "Accident",
+    "crime": "Crime",
+    "other": "Autre",
+    "go_back": "Retour",
+    "additional_info_prompt": "Veuillez nous en dire plus sur l'urgence (optionnel)\n\nTapez votre message ou appuyez sur 1 pour ignorer"
+  },
+  "community_posts": {
+    "title": "Publications Communautaires",
+    "news": "Actualités",
+    "events": "Événements",
+    "announcements": "Annonces",
+    "go_back": "Retour"
+  },
+  "hotlines": {
+    "title": "Lignes d'Urgence",
+    "police": "Police: 112",
+    "ambulance": "Ambulance: 912",
+    "fire": "Pompiers: 111",
+    "go_back": "Retour"
+  },
+  "distress": {
+    "title": "Alerte de Détresse",
+    "message": "Êtes-vous dans une urgence immédiate? Si oui, veuillez confirmer et l'aide sera en route.",
+    "confirm": "Confirmer",
+    "cancel": "Annuler"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "change_language": "Changer de Langue",
+    "terms_of_service": "Conditions d'Utilisation",
+    "privacy_policy": "Politique de Confidentialité",
+    "go_back": "Retour"
+  },
+  "languages": {
+    "title": "Sélectionner la Langue",
+    "english": "Anglais",
+    "kinyarwanda": "Kinyarwanda",
+    "french": "Français",
+    "swahili": "Swahili",
+    "go_back": "Retour"
+  },
+  "responses": {
+    "emergency_reported": "Merci! Votre urgence {{type}} a été signalée.\n\nRéférence: {{reference}}\n\nUn SMS de confirmation a été envoyé. L'équipe de secours sera en route sous peu. Restez en sécurité!",
+    "emergency_reported_fallback": "Votre urgence a été signalée.\n\nRéférence: {{reference}}\n\nL'aide est en route!",
+    "distress_activated": "ALERTE DE DÉTRESSE ACTIVÉE!\n\nRéférence: {{reference}}\n\nLes services d'urgence ont été notifiés. L'aide est en route. Restez calme et en sécurité.",
+    "invalid_option": "Option invalide sélectionnée",
+    "no_emergencies": "Aucune urgence trouvée",
+    "no_user_emergencies": "Vous n'avez aucune urgence",
+    "no_posts": "Aucune publication disponible",
+    "emergency_not_found": "Urgence non trouvée",
+    "post_not_found": "Publication non trouvée",
+    "unable_to_load": "Impossible de charger {{item}}"
+  },
+  "emergency_details": {
+    "title": "Détails de l'Urgence",
+    "type": "Type",
+    "status": "Statut",
+    "priority": "Priorité",
+    "location": "Emplacement",
+    "reported_by": "Signalé par",
+    "phone": "Téléphone",
+    "time": "Heure",
+    "go_back": "Retour"
+  },
+  "post_details": {
+    "title": "Détails de la Publication",
+    "by": "Par",
+    "posted": "Publié",
+    "go_back": "Retour"
+  },
+  "emergency_list": {
+    "all_emergencies": "Toutes les Urgences ({{count}})",
+    "your_emergencies": "Vos Urgences ({{count}})",
+    "by": "Par",
+    "go_back": "Retour"
+  },
+  "ai_assistance": {
+    "title": "Assistance IA d'Urgence",
+    "select_emergency": "Sélectionnez le type d'urgence pour obtenir des conseils IA",
+    "fire": "Incendie",
+    "medical": "Urgence Médicale",
+    "accident": "Accident",
+    "crime": "Crime/Sécurité",
+    "custom": "Poser une Question Personnalisée",
+    "go_back": "Retour",
+    "custom_prompt": "Tapez votre question d'urgence ou appuyez sur 1 pour revenir",
+    "getting_guidance": "Obtention des conseils IA...",
+    "guidance_title": "Conseils IA d'Urgence"
+  },
+  "common": {
+    "go_back": "Retour",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "continue": "Continuer"
+  }
+}
